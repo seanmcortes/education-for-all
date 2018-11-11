@@ -30,7 +30,7 @@ npm install express-handlebars
 npm install body-parser
 npm install forever
 npm install mysql
-npm  install path
+npm install path
 ```
 
 #### Environment Setup:
