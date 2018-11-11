@@ -9,7 +9,6 @@
     "express-handlebars": "^3.0.0",
     "forever": "^0.15.3",
     "mysql": "^2.16.0",
-    "nstall": "^0.2.0",
     "path": "^0.12.7"
   },
   "devDependencies": {},
@@ -21,7 +20,7 @@
     "url": "git+https://github.com/seanmcortes/education-for-all.git"
   },
   "author": "Sean Cortes",
-  "contributors":[
+  "contributors": [
     {
       "name": "Jason Anderson",
       "email": "anderja6@oregonstate.edu"
