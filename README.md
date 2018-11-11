@@ -4,7 +4,7 @@
 #### Authors: Jason Anderson, Sean Cortes, Joel Huffman, Tingting Lin and Ting Ju Sheppy
 #### Concept: Jacob Carter
 #### Project created for CS361 Software Engineering I at Oregon State University. 
-"Millions of individuals are incarcerated in the United States and the number continues to trend upwards. Much of this is due to the lack of any rehabilitative programs, especially in the realm of education, which has resulted in a “warehousing crisis”. Quite often incarcerated individuals have a desire to enroll in educational programs, but are unable to do so due to the cost of classroom materials and the difficulty of finding teachers willing to work in prisons. Thus, these individuals are left to serve their sentences without the opportunity to gain skills that will help them adjust to the larger world upon release." - Jacob Carter
+>"Millions of individuals are incarcerated in the United States and the number continues to trend upwards. Much of this is due to the lack of any rehabilitative programs, especially in the realm of education, which has resulted in a “warehousing crisis”. Quite often incarcerated individuals have a desire to enroll in educational programs, but are unable to do so due to the cost of classroom materials and the difficulty of finding teachers willing to work in prisons. Thus, these individuals are left to serve their sentences without the opportunity to gain skills that will help them adjust to the larger world upon release." - Jacob Carter
 
 Education For All is a web application which serves as an educational platform. It offers a comprehensive and coherent curriculum for incarcerated individuals who hope to obtain a GED.
 
