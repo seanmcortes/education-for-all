@@ -6,6 +6,7 @@ CREATE TABLE `user` (
     `username` varchar(255) NOT NULL,
     `password` varchar(255) NOT NULL,
     `register_date` DATE,
+	`user_type` varchar(255) NOT NULL,
     PRIMARY KEY(`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ALTER TABLE `user` auto_increment = 1;
@@ -46,7 +47,8 @@ ALTER TABLE `student` auto_increment = 1;
 
 CREATE TABLE `lecture` (
     `lecture_id` int(11) auto_increment NOT NULL,
-    `text_content` int(11),
+	`title` varchar(255) NOT NULL,
+    `body` TEXT,
     `instructor_id` int(11) NOT NULL,
     `course_id` int(11) NOT NULL,
     PRIMARY KEY(`lecture_id`),
@@ -58,8 +60,9 @@ ALTER TABLE `lecture` auto_increment = 1;
 
 CREATE TABLE `assignment` (
     `assignment_id` int(11) auto_increment NOT NULL,
-    `questions` int(11),
-    `answers` int(11),
+	`title` varchar(255) NOT NULL,
+    `questions` TEXT,
+    `answers` TEXT,
     `instructor_id` int(11) NOT NULL,
     `student_id` int(11) NOT NULL,
     `course_id` int(11) NOT NULL,
@@ -83,11 +86,12 @@ ALTER TABLE `student_course` auto_increment = 1;
 
 
 -- Data Dump
-INSERT INTO `user` (`username`, `password`) VALUES
-('studentuser1test', 'password1test'),
-('studentuser2test', 'password2test'),
-('instructoruser1test', 'password3test'),
-('instructoruser2test', 'password4test');
+INSERT INTO `user` (`username`, `password`, `user_type`) VALUES
+('studentuser1test', 'password1test', 'student'),
+('studentuser2test', 'password2test', 'student'),
+('instructoruser1test', 'password3test', 'instructor'),
+('instructoruser2test', 'password4test', 'instructor'),
+('admin', 'admin', 'admin');
 
 INSERT INTO `instructor` (`last_name`, `first_name`, `email`, `user_id`) VALUES
 ('Doe', 'John', 'djohn@oregonstate.edu', 3),
@@ -99,20 +103,20 @@ INSERT INTO `course` (`name`, `instructor_id`) VALUES
 ('Geography', 2);
 
 INSERT INTO `student` (`last_name`, `first_name`, `DOB`, `identification`, `user_id`) VALUES
-('Kennedy', 'Leon', '1991-03-10', '39zb3672a12', 1),
+('Kennedy', 'Leon', '1991-03-10', 'z3b3672a12', 1),
 ('Valentine', 'Mai', '1986-02-14', 'q7849io163', 2);
 
-INSERT INTO `lecture` (`text_content`, `instructor_id`, `course_id`) VALUES
-(1, 1, 1),
-(2, 1, 1),
-(3, 2, 2),
-(4, 2, 3);
+INSERT INTO `lecture` (`title`, `body`, `instructor_id`, `course_id`) VALUES
+('lecture 1 title', 'lecture 1 body', 1, 1),
+('lecture 2 title', 'lecture 2 body', 1, 1),
+('lecture 3 title', 'lecture 3 body', 2, 2),
+('lecture 4 title', 'lecture 4 body', 2, 3);
 
-INSERT INTO `assignment` (`questions`, `answers`, `instructor_id`, `student_id`, `course_id`) VALUES
-(1, 1, 1, 1, 1),
-(2, 2, 1, 1, 2),
-(3, 3, 2, 2, 2),
-(4, 4, 2, 2, 3);
+INSERT INTO `assignment` (`title`, `questions`, `answers`, `instructor_id`, `student_id`, `course_id`) VALUES
+('assignment 1 title', 'question 1\nquestion2\nquestion3\n', 'answer 1\nanswer 2\nanswer 3\n', 1, 1, 1),
+('assignment 2 title', 'question 1\nquestion2\nquestion3\n', 'answer 1\nanswer 2\nanswer 3\n', 1, 1, 2),
+('assignment 3 title', 'question 1\nquestion2\nquestion3\n', 'answer 1\nanswer 2\nanswer 3\n', 2, 2, 2),
+('assignment 4 title', 'question 1\nquestion2\nquestion3\n', 'answer 1\nanswer 2\nanswer 3\n', 2, 2, 3);
 
 INSERT INTO `student_course` (`s_id`, `c_id`) VALUES
 (1, 1),
