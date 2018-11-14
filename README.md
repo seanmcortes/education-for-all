@@ -19,7 +19,7 @@ Clone repository:
 ```
 git clone https://github.com/seanmcortes/education-for-all
 ```
-Install 'shrinkwrapped' dependencies:
+Install dependencies from 'npm-shrinkwrap.json':
 ```
 npm install
 ```
