@@ -69,7 +69,7 @@ app.get('/login', function(req, res, next) {
 
 app.post('/login', function(req, res, next) {
   mysql.pool.query(
-    'SELECT u.id, u.user_type FROM `user` u WHERE u.username = ? AND u.password = ?',    // Match username/password in form to `user`
+    'SELECT u.user_id, u.user_type FROM `user` u WHERE u.username = ? AND u.password = ?',    // Match username/password in form to `user`
     [req.body.username, req.body.password], function(err, results, fields) {
     if(err) {
       console.log(err);
@@ -82,6 +82,7 @@ app.post('/login', function(req, res, next) {
       res.redirect('/dashboard');
     }
   });
+  console.log(req.body);
 });
 
 
