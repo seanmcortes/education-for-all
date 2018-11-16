@@ -29,6 +29,7 @@ app.use(session({
   secret: 'group18',
   authenticated: false,
   user_id: 0,
+  user_type: '',
   resave: false,
   saveUninitialized: false
 }));
@@ -68,7 +69,7 @@ app.get('/login', function(req, res, next) {
 
 app.post('/login', function(req, res, next) {
   mysql.pool.query(
-    'SELECT u.id FROM `user` u WHERE u.username = ? AND u.password = ?',    // Match username/password in form to `user`
+    'SELECT u.id, u.user_type FROM `user` u WHERE u.username = ? AND u.password = ?',    // Match username/password in form to `user`
     [req.body.username, req.body.password], function(err, results, fields) {
     if(err) {
       console.log(err);
@@ -76,7 +77,9 @@ app.post('/login', function(req, res, next) {
       return;
     } else {
       req.session.authenticated = true;
-      req.session.user_id = results;
+      req.session.user_id = results.id;
+      req.session.user_type = results.user_type;
+      res.redirect('/dashboard');
     }
   });
 });
@@ -104,6 +107,18 @@ app.post('/admin/createuser', checkAdmin, function(req, res, next) {
     } 
   });
 })
+
+
+// Render dashboard page for students
+app.get('/dashboard', checkAuth, function(req, res, next) {
+  if (req.session.user_type == "admin"){
+    res.redirect('/admin/createuser');
+  } else {
+    var context = {};
+    context.test = "Hello World!";
+    res.render('dashboard', context);
+  }
+});
 
 
 app.use(function(req,res) {
