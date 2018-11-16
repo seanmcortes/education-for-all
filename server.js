@@ -81,7 +81,6 @@ app.post('/login', function(req, res, next) {
   });
 });
 
-
 // Render createuser page for admin
 app.get('/admin/createuser', checkAdmin, function(req, res, next) {
   var context = {};
@@ -105,19 +104,37 @@ app.post('/admin/createuser', checkAdmin, function(req, res, next) {
   });
 })
 
+// Get profile
+function getPerson(res, mysql, context, id, complete){
+        console.log("in function");
+      var sql = "SELECT student_id, first_ame, last_lame, DATE_FORMAT(DOB, '%Y-%m-%d') AS DOB, identification, user_id FROM student WHERE student_id = ?";
+      mysql.pool.query(sql, inserts, function(error, results, fields){
+          if(error){
+              res.write(JSON.stringify(error));
+              res.end();
+          }
+          context.student = results[0];
+          complete();
+      });
+}
+
+// Display profile page
+app.get('/profile', getPerson, function(req, res, next) {
+  var context = {};
+  console.log("profile page");
+  res.render('profile', context);
+});
 
 app.use(function(req,res) {
   res.status(404);
   res.render('404');
 });
 
-
 app.use(function(err, req, res, next) {
   console.error(err.stack);
   res.status(500);
   res.render('500');
 });
-
 
 app.listen(app.get('port'), function() {
   console.log('Express started on port:' + app.get('port') + '; press Ctrl-C to terminate.');
