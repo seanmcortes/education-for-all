@@ -77,6 +77,7 @@ app.post('/login', function(req, res, next) {
     } else {
       req.session.authenticated = true;
       req.session.user_id = results;
+      res.redirect('/dashboard');
     }
   });
 });
@@ -104,6 +105,14 @@ app.post('/admin/createuser', checkAdmin, function(req, res, next) {
     } 
   });
 })
+
+
+// Render dashboard page for students
+app.get('/dashboard', checkAdmin, function(req, res, next) {
+  var context = {};
+  context.test = "Hello World!";
+  res.render('dashboard', context);
+});
 
 
 app.use(function(req,res) {
