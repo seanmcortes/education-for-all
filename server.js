@@ -28,10 +28,10 @@ app.use(express.static('public'));
 app.use(session({
   secret: 'group18',
   authenticated: false,
-  user_id: 0,
-  user_type: '',
-  resave: false,
-  saveUninitialized: false
+  // user_id: 0,
+  // user_type: '',
+  resave: true,
+  saveUninitialized: true
 }));
 
 
@@ -76,13 +76,19 @@ app.post('/login', function(req, res, next) {
       next(err);
       return;
     } else {
-      req.session.authenticated = true;
-      req.session.user_id = results.id;
-      req.session.user_type = results.user_type;
-      res.redirect('/dashboard');
+      if (!results.length) {
+        console.log("Incorrect username/password");
+        res.redirect('/login')
+      } else {
+        req.session.authenticated = true;
+        req.session.user_id = results[0].user_id;
+        req.session.user_type = results[0].user_type;
+        console.log(results);
+        console.log(req.session);
+        res.redirect('/dashboard');
+      }
     }
   });
-  console.log(req.body);
 });
 
 
@@ -96,15 +102,30 @@ app.get('/admin/createuser', checkAdmin, function(req, res, next) {
 
 // Submit form and add user to database
 app.post('/admin/createuser', checkAdmin, function(req, res, next) {
+  var user_type = req.body.user_type;
   mysql.pool.query(
     'INSERT INTO `user` (username, password, register_date, user_type) VALUES (?, ?, NOW(), ?)',
     [req.body.username, req.body.password, req.body.user_type],
-    function(err, results, fields) {
+    function (err, results, fields) {
     if(err) {
       next(err);
       return;
     } else {
-      res.redirect('/admin/createuser');
+      console.log(results);
+      var new_id = results.insertId;
+      console.log(new_id);
+      mysql.pool.query(
+        'INSERT INTO `' + user_type + '` (last_name, first_name, DOB, identification, user_id) VALUES (?, ?, ?, ?, ' + new_id + ')',
+        [req.body.last_name, req.body.first_name, req.body.DOB, req.body.identification],
+        function (err, results, fields) {
+          if(err) {
+            next(err);
+            return;
+          } else {
+            console.log("User creation success!");
+            res.redirect('/admin/createuser');
+          }
+        });
     } 
   });
 })
