@@ -105,13 +105,6 @@ app.post('/admin/createuser', checkAdmin, function(req, res, next) {
   });
 })
 
-
-app.use(function(req,res) {
-  res.status(404);
-  res.render('404');
-});
-
-
 /*********** home page **********/
 app.get('/', function (req, res) {
     var context = {};
@@ -222,14 +215,14 @@ app.get('/getLectures', function(req, res, next){
   // req.session.user_id = 1; 
 
   getAllLecturesForCourse(req.query.course_id, req.session.user_id,  
-  function(lectureList) {
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify(lectureList));
-  },
-  function(error) {
-    res.send(JSON.stringify(error));
-  }
-);
+    function(lectureList) {
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify(lectureList));
+    },
+    function(error) {
+      res.send(JSON.stringify(error));
+    }
+  );
 });
 
 
@@ -252,7 +245,7 @@ var getAllLecturesForCourse = function(courseId, studentId, success, failure) {
       console.log("Get lecture for user : " + JSON.stringify(result));
       success(result);
     }
-});
+  });
 };
 
 
@@ -267,7 +260,6 @@ app.get('/assignments', function (req, res) {
   //debug 
   // req.session.user_id = 1; 
 
-  
   var context = {};
   getAllAssignmentsForCourse(req.query.course_id, req.session.user_id, 
     function(assignmentList) {
@@ -285,7 +277,7 @@ app.get('/assignments', function (req, res) {
 app.get('/getAssignments', function(req, res, next){
 
   //debug 
-  req.session.user_id = 1; 
+  // req.session.user_id = 1; 
 
   getAllAssignmentsForCourse(req.query.course_id, req.session.user_id,  
   function(assignmentList) {
@@ -300,14 +292,14 @@ app.get('/getAssignments', function(req, res, next){
 
 
 var getAllAssignmentsForCourse = function(courseId, studentId, success, failure) {
-if (!courseId || !studentId) {
-  var errorMessage = "courseId or studentId is invalid";
-  console.log(errorMessage);
-  failure(errorMessage);
-  return;
-}
+  if (!courseId || !studentId) {
+    var errorMessage = "courseId or studentId is invalid";
+    console.log(errorMessage);
+    failure(errorMessage);
+    return;
+  }
 
-mysql.pool.query("SELECT assignment.title, assignment.questions FROM assignment " + 
+  mysql.pool.query("SELECT assignment.title, assignment.questions FROM assignment " + 
                   "INNER JOIN course ON assignment.course_id = course.course_id " + 
                   "INNER JOIN student_course ON course.course_id = student_course.c_id " +
                   "WHERE course.course_id = ? AND student_course.s_id = ?", [courseId, studentId], function (error, result) {
@@ -318,16 +310,20 @@ mysql.pool.query("SELECT assignment.title, assignment.questions FROM assignment 
       console.log("Get assignment for user " + JSON.stringify(result));
       success(result);
     }
-});
+  });
 };
 
+
+app.use(function(req,res) {
+  res.status(404);
+  res.render('404');
+});
 
 app.use(function(err, req, res, next) {
   console.error(err.stack);
   res.status(500);
   res.render('500');
 });
-
 
 app.listen(app.get('port'), function() {
   console.log('Express started on port:' + app.get('port') + '; press Ctrl-C to terminate.');
