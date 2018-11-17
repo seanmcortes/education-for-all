@@ -1,0 +1,47 @@
+{
+  "name": "education-for-all",
+  "version": "1.0.0",
+  "description": "Web application which serves as an education platform for incarcerated individuals who hope to obtain their GED.",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.15.6",
+    "forever": "^0.15.3",
+    "mysql": "^2.16.0",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \\\"Error:  no test specified\\\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seanmcortes/education-for-all.git"
+  },
+  "author": "Sean Cortes",
+  "contributors": [
+    {
+      "name": "Jason Anderson",
+      "email": "anderja6@oregonstate.edu"
+    },
+    {
+      "name": "Joel Huffman",
+      "email": "huffmajo@oregonstate.edu"
+    },
+    {
+      "name": "Tingting Lin",
+      "email": "lintin@oregonstate.edu"
+    },
+    {
+      "name": "Ting Ju Sheppy",
+      "email": "chit@oregonstate.edu"
+    }
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/seanmcortes/education-for-all/issues"
+  },
+  "homepage": "https://github.com/seanmcortes/education-for-all#readme"
+}
