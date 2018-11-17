@@ -107,18 +107,17 @@ app.post('/admin/createuser', checkAdmin, function(req, res, next) {
 // Display profile page
 app.get('/profile', function(req, res, next) {
   var context = {};
-   
   mysql.pool.query(
     'SELECT ' + req.session.user_type + '_id, first_name, last_name, DOB, identification, user_id FROM ' + req.session.user_type + ' WHERE user_id = ' + req.session.user_id,
     function (err, results, fields) {
       if(error){
-         res.write(JSON.stringify(error));
-         res.end();
+        res.write(JSON.stringify(error));
+        res.end();
+      } else {
+      	context.identification = results[0].identification;
+      	res.render('profile', context);
       }
   });
-  context.identification = results[0].identification;
-
-  res.render('profile', context);
 });
 
 
