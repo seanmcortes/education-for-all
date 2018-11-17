@@ -4,6 +4,14 @@
 	<title>Demo Page</title>
 	<script type="text/javascript" src="/client.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    {{#each jsscripts}}
+        <script src="{{this}}"></script>
+    {{/each}}
+
+    {{#each cssfiles}}
+        <link rel="stylesheet" type="text/css" href="{{this}}">
+    {{/each}}
 </head>
 <body>
 	{{{body}}}

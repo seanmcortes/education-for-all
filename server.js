@@ -112,6 +112,199 @@ app.use(function(req,res) {
 });
 
 
+/*********** home page **********/
+app.get('/', function (req, res) {
+    var context = {};
+   context.text = "This is home page!";
+    res.render('home', context);
+});
+
+/*********** dashboard page including the link of selected courses **********/
+
+//return html page for dashboard
+
+//example : enter http://localhost:3000/dashboard?student_id=1 to get the course overview for student id 1.
+app.get('/dashboard', function (req, res) {
+  var context = {};
+  getDashboardByStudentId(req.query.student_id, 
+    function(courseLink) {
+      context.courseLink = courseLink;
+      res.render('dashboard', context);
+    },
+    function(error) {
+      context.errorMessage = JSON.stringify(error);
+      res.render('500', context);
+    }
+  );
+});
+
+//get dashboard API
+app.get('/getDashboard', function(req, res, next){
+  getDashboardByStudentId(req.query.student_id, 
+  function(courseLink) {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(courseLink));
+  },
+  function(error) {
+    res.send(JSON.stringify(error));
+  }
+);
+});
+
+var getDashboardByStudentId = function(studentId, success, failure) {
+  if (!studentId) {
+    var errorMessage = "studentId is invalid";
+    console.log(errorMessage);
+    failure(errorMessage);
+    return;
+  }
+
+  mysql.pool.query("SELECT course.name FROM course " +
+                    "INNER JOIN student_course ON student_course.c_id = course.course_id " +
+                    "INNER JOIN student ON student.student_id = student_course.s_id " + 
+                    "WHERE student.student_id = ?", [studentId], function (error, result) {
+      if (error) {
+        console.log("Failed to get course links for student : " + studentId);
+        failure(error);
+      } else {
+        console.log("Get courses link for user : " + JSON.stringify(result));
+        success(result);
+      }
+  });
+};
+
+/*********** coursesOverview page to display Course overview that user takes**********/
+
+//return html page for course overview
+
+
+  
+
+/*********** lecture page to display all lectures for selected course that user takes**********/
+
+//return html page of lecture for selected course
+
+//example : enter http://localhost:3000/lectures?course_id=1&student_id=1 to get the lecture overview for student id 1.
+app.get('/lectures', function (req, res) {
+  var context = {};
+  getAllLecturesForCourse(req.query.course_id, req.query.student_id, 
+    function(lectureList) {
+      context.lectureList = lectureList;
+      res.render('lecture', context);
+    },
+    function(error) {
+      context.errorMessage = JSON.stringify(error);
+      res.render('500', context);
+    }
+  );
+  
+  getAllAssignmentsForCourse(req.query.course_id, req.query.student_id, 
+    function(assignmentList) {
+      context.assignmentList = assignmentList;
+      res.render('assignment', context);
+    },
+    function(error) {
+      context.errorMessage = JSON.stringify(error);
+      res.render('500', context);
+    }
+  );
+
+});
+
+//get Lectures API
+app.get('/getLectures', function(req, res, next){
+  getAllLecturesForCourse(req.query.course_id, req.query.student_id, 
+  function(lectureList) {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(lectureList));
+  },
+  function(error) {
+    res.send(JSON.stringify(error));
+  }
+);
+});
+
+
+var getAllLecturesForCourse = function(courseId, studentId, success, failure) {
+  if (!courseId || !studentId) {
+    var errorMessage = "course Id or student Id is invalid";
+    console.log(errorMessage);
+    failure(errorMessage);
+    return;
+  }
+
+  mysql.pool.query("SELECT lecture.title, lecture.body FROM lecture " + 
+                  "INNER JOIN course ON lecture.course_id = course.course_id " + 
+                  "INNER JOIN student_course ON course.course_id = student_course.c_id " +
+                  "WHERE course.course_id = ? AND student_course.s_id = ?", [courseId, studentId], function (error, result) {
+    if (error) {
+      console.log("Failed to get lecture of course " + courseId, "for student ID " + studentId);
+      failure(error);
+    } else {
+      console.log("Get lecture for user : " + JSON.stringify(result));
+      success(result);
+    }
+});
+};
+
+
+
+/*********** assignments page to display all assignments for selected course that user take **********/
+
+//return html page of assignments for selected course
+//example : enter http://localhost:3000/assignments?course_id=1&student_id=1 to get the assignment for user(student_id=1).
+
+app.get('/assignments', function (req, res) {
+  var context = {};
+  getAllAssignmentsForCourse(req.query.course_id, req.query.student_id, 
+    function(assignmentList) {
+      context.assignmentList = assignmentList;
+      res.render('assignment', context);
+    },
+    function(error) {
+      context.errorMessage = JSON.stringify(error);
+      res.render('500', context);
+    }
+  );
+});
+
+//get Lectures API
+app.get('/getAssignments', function(req, res, next){
+  getAllAssignmentsForCourse(req.query.course_id, req.query.student_id, 
+  function(assignmentList) {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(assignmentList));
+  },
+  function(error) {
+    res.send(JSON.stringify(error));
+  }
+);
+});
+
+
+var getAllAssignmentsForCourse = function(courseId, studentId, success, failure) {
+if (!courseId || !studentId) {
+  var errorMessage = "courseId or studentId is invalid";
+  console.log(errorMessage);
+  failure(errorMessage);
+  return;
+}
+
+mysql.pool.query("SELECT assignment.title, assignment.questions FROM assignment " + 
+                  "INNER JOIN course ON assignment.course_id = course.course_id " + 
+                  "INNER JOIN student_course ON course.course_id = student_course.c_id " +
+                  "WHERE course.course_id = ? AND student_course.s_id = ?", [courseId, studentId], function (error, result) {
+    if (error) {
+      console.log("Failed to get assignments of course " + courseId, "for student " + studentId);
+      failure(error);
+    } else {
+      console.log("Get assignment for user " + JSON.stringify(result));
+      success(result);
+    }
+});
+};
+
+
 app.use(function(err, req, res, next) {
   console.error(err.stack);
   res.status(500);
