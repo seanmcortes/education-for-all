@@ -104,26 +104,23 @@ app.post('/admin/createuser', checkAdmin, function(req, res, next) {
   });
 })
 
-// Get profile
-function getPerson(res, mysql, context, id, complete){
-        console.log("in function");
-      var sql = "SELECT student_id, first_ame, last_lame, DATE_FORMAT(DOB, '%Y-%m-%d') AS DOB, identification, user_id FROM student WHERE student_id = ?";
-      mysql.pool.query(sql, inserts, function(error, results, fields){
-          if(error){
-              res.write(JSON.stringify(error));
-              res.end();
-          }
-          context.student = results[0];
-          complete();
-      });
-}
-
 // Display profile page
-app.get('/profile', getPerson, function(req, res, next) {
+app.get('/profile', function(req, res, next) {
   var context = {};
-  console.log("profile page");
+   
+  mysql.pool.query(
+    'SELECT ' + req.session.user_type + '_id, first_name, last_name, DOB, identification, user_id FROM ' + req.session.user_type + ' WHERE user_id = ' + req.session.user_id,
+    function (err, results, fields) {
+      if(error){
+         res.write(JSON.stringify(error));
+         res.end();
+      }
+  });
+  context.identification = results[0].identification;
+
   res.render('profile', context);
 });
+
 
 app.use(function(req,res) {
   res.status(404);
