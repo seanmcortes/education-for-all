@@ -268,7 +268,7 @@ app.get('/assignments', function (req, res) {
   );
 });
 
-//get Lectures API
+//get assignment API
 app.get('/getAssignments', function(req, res, next){
   getAllAssignmentsForCourse(req.query.course_id, req.query.student_id, 
   function(assignmentList) {
