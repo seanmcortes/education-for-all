@@ -123,10 +123,14 @@ app.get('/', function (req, res) {
 
 //return html page for dashboard
 
-//example : enter http://localhost:3000/dashboard?student_id=1 to get the course overview for student id 1.
+//example : enter http://localhost:3000/dashboard to get the course overview for student id 1.
 app.get('/dashboard', function (req, res) {
+
+  //debug, the function works.
+  // req.session.user_id = 1; 
+
   var context = {};
-  getDashboardByStudentId(req.query.student_id, 
+  getDashboardByStudentId(req.session.user_id, 
     function(courseLink) {
       context.courseLink = courseLink;
       res.render('dashboard', context);
@@ -140,7 +144,12 @@ app.get('/dashboard', function (req, res) {
 
 //get dashboard API
 app.get('/getDashboard', function(req, res, next){
-  getDashboardByStudentId(req.query.student_id, 
+
+  //debug 
+  // req.session.user_id = 1; 
+
+
+  getDashboardByStudentId(req.session.user_id,
   function(courseLink) {
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(courseLink));
@@ -159,7 +168,7 @@ var getDashboardByStudentId = function(studentId, success, failure) {
     return;
   }
 
-  mysql.pool.query("SELECT course.name FROM course " +
+  mysql.pool.query("SELECT course.name, course.course_id FROM course " +
                     "INNER JOIN student_course ON student_course.c_id = course.course_id " +
                     "INNER JOIN student ON student.student_id = student_course.s_id " + 
                     "WHERE student.student_id = ?", [studentId], function (error, result) {
@@ -184,10 +193,16 @@ var getDashboardByStudentId = function(studentId, success, failure) {
 
 //return html page of lecture for selected course
 
-//example : enter http://localhost:3000/lectures?course_id=1&student_id=1 to get the lecture overview for student id 1.
+//example : enter http://localhost:3000/lectures?course_id=1 to get the lecture overview for student id 1.
+
+
 app.get('/lectures', function (req, res) {
+
+  //debug 
+  // req.session.user_id = 1; 
+
   var context = {};
-  getAllLecturesForCourse(req.query.course_id, req.query.student_id, 
+  getAllLecturesForCourse(req.query.course_id, req.session.user_id, 
     function(lectureList) {
       context.lectureList = lectureList;
       res.render('lecture', context);
@@ -198,22 +213,15 @@ app.get('/lectures', function (req, res) {
     }
   );
   
-  getAllAssignmentsForCourse(req.query.course_id, req.query.student_id, 
-    function(assignmentList) {
-      context.assignmentList = assignmentList;
-      res.render('assignment', context);
-    },
-    function(error) {
-      context.errorMessage = JSON.stringify(error);
-      res.render('500', context);
-    }
-  );
-
 });
 
 //get Lectures API
 app.get('/getLectures', function(req, res, next){
-  getAllLecturesForCourse(req.query.course_id, req.query.student_id, 
+
+  //debug 
+  // req.session.user_id = 1; 
+
+  getAllLecturesForCourse(req.query.course_id, req.session.user_id,  
   function(lectureList) {
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(lectureList));
@@ -252,11 +260,16 @@ var getAllLecturesForCourse = function(courseId, studentId, success, failure) {
 /*********** assignments page to display all assignments for selected course that user take **********/
 
 //return html page of assignments for selected course
-//example : enter http://localhost:3000/assignments?course_id=1&student_id=1 to get the assignment for user(student_id=1).
+//example : enter http://localhost:3000/assignments?course_id=1 to get the assignment for user(student_id=1).
 
 app.get('/assignments', function (req, res) {
+
+  //debug 
+  // req.session.user_id = 1; 
+
+  
   var context = {};
-  getAllAssignmentsForCourse(req.query.course_id, req.query.student_id, 
+  getAllAssignmentsForCourse(req.query.course_id, req.session.user_id, 
     function(assignmentList) {
       context.assignmentList = assignmentList;
       res.render('assignment', context);
@@ -270,7 +283,11 @@ app.get('/assignments', function (req, res) {
 
 //get assignment API
 app.get('/getAssignments', function(req, res, next){
-  getAllAssignmentsForCourse(req.query.course_id, req.query.student_id, 
+
+  //debug 
+  req.session.user_id = 1; 
+
+  getAllAssignmentsForCourse(req.query.course_id, req.session.user_id,  
   function(assignmentList) {
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(assignmentList));
