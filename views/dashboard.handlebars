@@ -7,8 +7,33 @@ Concept: Jacob Carter
 <!DOCTYPE html>
 <html>
   <head>
-    <script type="text/javascript" src="/client.js"></script>
+    <link href="styles.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
   </head>
   <body>
     <h2>Dashboard</h2>
+      <h3>Course 1</h3>
+      <center>
+        <nav>
+          <ul> 
+            <li><b><a href="/login">Login</a></b></li>
+            <li><b><a href="/admin/createuser">Create User</a></b></li>
+            <li><b><a href="/login">Login</a></b></li>
+            <li><b><a href="/login">Login</a></b></li>
+          </ul>
+        </nav>
+      </center>
+<!--
+      <table id="classes">
+        {{#if results}}
+          {{#each results}}
+            <tr>
+              <td><a href="/login"id={{this.name}}"></a></td>
+            </tr>
+          {{/each}}
+        {{/if}}    
+      </table>  
+-->      
+    <script type="text/javascript" src="/client.js"></script>
   </body>
+</html>
