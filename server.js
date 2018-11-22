@@ -35,10 +35,8 @@ app.use(session({
 
 // Middleware to check if user is logged in
 function checkAuth(req, res, next) {
-  if(req.path == '/login') {  // ignore if on login page
-    next();
-  } else if(!req.session.authenticated) { // user is not authenticated, redirect to login
-    res.send('Not logged in yet.');
+  if(!req.session.authenticated) { // user is not authenticated, redirect to login
+    // res.send('Not logged in yet.');
     res.redirect('/login');
   } else {
     next();   // user is authenticated, allow page to render
@@ -49,9 +47,9 @@ function checkAuth(req, res, next) {
 // Middleware to check if user is admin
 function checkAdmin(req, res, next) {
   if(!req.session.authenticated) { // user is not authenticated, redirect to login
-    res.send('Not logged in yet.');
+    res.redirect('/login');
   } else if (req.session.user_type != 'admin') {
-    res.send('You are not authorised.');
+    res.send('You are not authorised to view this page.');
   } else {
     next();   // user is authenticated, allow page to render
   }
@@ -130,17 +128,18 @@ app.post('/admin/createuser', checkAdmin, function(req, res, next) {
 
 
 // Display profile page
-app.get('/profile', function(req, res, next) {
+app.get('/profile', checkAuth, function(req, res, next) {
   var context = {};
   mysql.pool.query(
-    'SELECT ' + req.session.user_type + '_id, first_name, last_name, DOB, identification, user_id FROM ' + req.session.user_type + ' WHERE user_id = ' + req.session.user_id,
+    'SELECT ' + req.session.user_type + '_id, last_name, first_name, DOB, identification, user_id FROM ' + req.session.user_type + ' WHERE user_id = ' + req.session.user_id,
     function (err, results, fields) {
-      if(error){
+      if(err){
         res.write(JSON.stringify(error));
         res.end();
       } else {
-        context.identification = results[0].identification;
-        res.render('profile', context);
+        context = JSON.stringify(results);
+        console.log(context);
+        res.render('profile', {context});
       }
   });
 });
