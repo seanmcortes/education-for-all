@@ -353,6 +353,20 @@ var getAllAssignmentsForCourse = function(courseId, studentId, success, failure)
 };
 
 
+// Route to Education Plans. Not implemented
+app.get('/educationplan', function (req, res) {
+  var context = {};
+  res.send("Page under construction.")
+});
+
+
+// Route to Education Progress. Not implemented
+app.get('/educationprogress', function (req, res) {
+  var context = {};
+  res.send("Page under construction.")
+});
+
+
 app.use(function(req,res) {
   res.status(404);
   res.render('404');
