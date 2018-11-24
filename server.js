@@ -55,6 +55,60 @@ function checkAdmin(req, res, next) {
   }
 }
 
+/* 
+Check and see if student is enrolled in current course, or instructor teaches current course.
+*/
+function checkCourseAuth(req, res, next) {
+  var authenticated = false;
+
+  if(req.session.user_type == "student") {
+    mysql.pool.query(
+    'SELECT c.course_id FROM `course` c ' +
+    'INNER JOIN `student_course` sc ON sc.c_id = c.course_id ' +
+    'INNER JOIN `student` s on s.student_id = sc.s_id ' +
+    'WHERE s.user_id = ' + req.session.user_id,
+    function(err, results, fields) {
+      if(err) {
+        res.write(JSON.stringify(err));
+        res.end();
+      } else {
+        rows = JSON.parse(JSON.stringify(results));   
+        rows.forEach(function(row) {   // Iterate through results and look for matching student_id with session
+          if (row.course_id == req.params.c_id) {
+            authenticated = true;
+            next();
+          }
+        });
+        if(!authenticated) {
+          res.send("You are not authorised to view this page.");
+        }
+      }
+    });
+  }
+  else if(req.session.user_type == "instructor") {    // Get instructor_id from course and compare to session
+    mysql.pool.query(
+      'SELECT i.user_id FROM `instructor` i ' +
+      'INNER JOIN `course` c ON c.instructor_id = i.instructor_id ' +
+      'WHERE c.course_id = ' + req.params.c_id,
+      function(err, results, fields) {
+        if(err) {
+          res.send("Database error.");
+          res.end();
+        } else {
+          row = JSON.parse(JSON.stringify(results));
+          if(row[0].user_id != req.session.user_id) {
+            res.send("You are not authorised to view this ppage.");
+          } else {
+            next();
+          }
+        }
+      })
+  }
+  else {
+    res.send("You are not authorised to view this page.");
+  }
+}
+
 
 app.get('/login', function(req, res, next) {
   var context = {};
@@ -223,16 +277,15 @@ var getDashboardByStudentId = function(studentId, success, failure) {
 //return html page for course overview
 
 
-app.get('/course/:course_id', function (req, res) {
-  var id = req.params.course_id;
+app.get('/course/:c_id', checkCourseAuth, function (req, res) {
   var context = {
-    course_id: id
+    course_id: req.params.c_id
   };
 
   mysql.pool.query(
     "SELECT l.lecture_id, l.title FROM `course` c " +
       "INNER JOIN `lecture` l ON l.course_id = c.course_id " +
-      "WHERE c.course_id = " + id, 
+      "WHERE c.course_id = " + req.params.c_id, 
       function(err, results, fields) {
       if(err){
         res.write(JSON.stringify(err));
@@ -243,7 +296,7 @@ app.get('/course/:course_id', function (req, res) {
         mysql.pool.query(
           "SELECT a.assignment_id, a.title FROM `course` c " +
             "INNER JOIN `assignment` a ON a.course_id = c.course_id " +
-            "WHERE c.course_id = " + id,
+            "WHERE c.course_id = " + req.params.c_id,
             function(err, results, fields) {
               if(err) {
                 res.write(JSON.stringify(err));
@@ -265,7 +318,8 @@ app.get('/course/:course_id', function (req, res) {
 //example : enter http://localhost:3000/lectures?course_id=1 to get the lecture overview for student id 1.
 
 
-app.get('/lectures', function (req, res) {
+// app.get('/lectures', function (req, res) {
+app.get('/course/:c_id/lecture/:l_id', function (req, res) {
 
   //debug 
   // req.session.user_id = 1; 
@@ -281,7 +335,6 @@ app.get('/lectures', function (req, res) {
       res.render('500', context);
     }
   );
-  
 });
 
 //get Lectures API
