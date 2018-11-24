@@ -39,6 +39,8 @@ Check if user is logged in and authenticated. Redirect to login screen if not.
 function checkAuth(req, res, next) {
   if(!req.session.authenticated) { // user is not authenticated, redirect to login
     res.redirect('/login');
+  } else if (req.session.user_type == 'admin') {
+    res.redirect('/admin/createuser');
   } else {
     next();   // user is authenticated, allow page to render
   }
