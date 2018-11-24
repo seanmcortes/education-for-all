@@ -223,7 +223,40 @@ var getDashboardByStudentId = function(studentId, success, failure) {
 //return html page for course overview
 
 
-  
+app.get('/course/:course_id', function (req, res) {
+  var id = req.params.course_id;
+  var context = {
+    course_id: id
+  };
+
+  mysql.pool.query(
+    "SELECT l.lecture_id, l.title FROM `course` c " +
+      "INNER JOIN `lecture` l ON l.course_id = c.course_id " +
+      "WHERE c.course_id = " + id, 
+      function(err, results, fields) {
+      if(err){
+        res.write(JSON.stringify(err));
+        res.end();
+      } else {
+        context.lecture = results;
+
+        mysql.pool.query(
+          "SELECT a.assignment_id, a.title FROM `course` c " +
+            "INNER JOIN `assignment` a ON a.course_id = c.course_id " +
+            "WHERE c.course_id = " + id,
+            function(err, results, fields) {
+              if(err) {
+                res.write(JSON.stringify(err));
+                res.end();
+              } else {
+                context.assignment = results;
+                console.log(context);
+                res.render('course', context);
+              }
+            });
+      }
+  });
+});
 
 /*********** lecture page to display all lectures for selected course that user takes**********/
 
