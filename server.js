@@ -477,6 +477,11 @@ app.get('/educationprogress', function (req, res) {
   res.send("Page under construction.")
 });
 
+/*********** logout **********/
+app.get('/logout', function (req, res) {
+  req.session.destroy();
+  res.redirect('/login');
+})
 
 app.use(function(req,res) {
   res.status(404);
