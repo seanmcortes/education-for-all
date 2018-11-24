@@ -11,14 +11,14 @@ Concept: Jacob Carter
   </head>
   <body>
     <h2>Profile</h2>
-    <form action="/profile" method="post">
-      <fieldset>
-      	<legend>Profile</legend>
-      		<label for="firstname">First name:</label> <br>
-      		<label for="lastname">Last name:</label> <br>
-      		<label for="DOB">Date of birth:</label> <br>
-        	<label for="identification">Identification:</label> <br>
-        	<label for="account_type">Account type:</label>
-      </fieldset>
-    </form>
+    <fieldset>
+    	<legend>Profile</legend>
+    		<span>First name: {{this.first_name}} </span> <br>
+    		<span>Last name: {{this.last_name}} </span> <br>
+    		<span>Date of birth: {{this.DOB}} </span> <br>
+      	<span>Identification: {{this.identification}} </span> <br>
+      	<span>Account type: {{this.user_id}} </span>
+        {{this}}
+
+    </fieldset>
   </body>
