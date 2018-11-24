@@ -4,3 +4,21 @@
 
 
 // Place helper functions such as button clicks and ajax calls here:
+$(function() {
+    var postAssignmentAnswerExample = function(answers_string) {
+        $.post(window.location.pathname, 
+        {
+            answers: answers_string
+        }, 
+        function(result) {
+            alert("Answers submitted successfully.");
+        });
+    };
+
+    $("#submit-answer-btn").click(function() {
+        var answer = $("#assignment-answer").val();
+        postAssignmentAnswerExample(answer);
+    });
+
+});
+

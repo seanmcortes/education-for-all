@@ -136,6 +136,27 @@ function checkCourseLecture(req, res, next) {
     });
 }
 
+/*
+Verifies that the given assignment param belongs to the given course.
+*/
+function checkCourseAssignment(req, res, next) {
+  mysql.pool.query(
+    'SELECT course_id FROM `assignment` WHERE assignment_id = ' + req.params.a_id,
+    function(err, results, fields) {
+      if(err) {
+        res.send("Database error!");
+        next(err);
+      } else {
+        results = JSON.parse(JSON.stringify(results));
+        if (results[0].course_id == req.params.c_id) {
+          next();
+        } else {
+          res.send("This page does not exist.");
+        }
+      }
+    });
+}
+
 /*********** login GET route **********/
 app.get('/login', function(req, res, next) {
   var context = {};
@@ -349,7 +370,7 @@ app.get('/course/:c_id/lecture/:l_id', checkCourseAuth, checkCourseLecture, func
   // req.session.user_id = 1; 
 
   var context = {};
-  getAllLecturesForCourse(req.params.c_id, req.params.l_id, 
+  getLectureFromCourse(req.params.c_id, req.params.l_id, 
     function(lectureList) {
       context = lectureList[0];
       console.log(context);
@@ -368,7 +389,7 @@ app.get('/getLectures', function(req, res, next){
   //debug 
   // req.session.user_id = 1; 
 
-  getAllLecturesForCourse(req.query.course_id, req.session.user_id,  
+  getLectureFromCourse(req.query.course_id, req.session.user_id,  
     function(lectureList) {
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify(lectureList));
@@ -380,9 +401,9 @@ app.get('/getLectures', function(req, res, next){
 });
 
 
-var getAllLecturesForCourse = function(courseId, lectureId, success, failure) {
+var getLectureFromCourse = function(courseId, lectureId, success, failure) {
   if (!courseId || !lectureId) {
-    var errorMessage = "course Id or student Id is invalid";
+    var errorMessage = "course Id or lecture Id is invalid";
     console.log(errorMessage);
     failure(errorMessage);
     return;
@@ -402,20 +423,20 @@ var getAllLecturesForCourse = function(courseId, lectureId, success, failure) {
 
 
 
-/*********** assignments page to display all assignments for selected course that user take **********/
+/***********s assignments page to display all assignments for selected course that user take **********/
 
 //return html page of assignments for selected course
-//example : enter http://localhost:3000/assignments?course_id=1 to get the assignment for user(student_id=1).
+//example : enter http://localhost:3000/course/1/assignments/1 to get the assignment id 1 for course id 1.
 
-app.get('/assignments', function (req, res) {
-
+app.get('/course/:c_id/assignment/:a_id', checkCourseAuth, checkCourseAssignment, function (req, res) {
   //debug 
   // req.session.user_id = 1; 
 
   var context = {};
-  getAllAssignmentsForCourse(req.query.course_id, req.session.user_id, 
+  getAssignmentFromCourse(req.params.c_id, req.params.a_id,  
     function(assignmentList) {
-      context.assignmentList = assignmentList;
+      context = assignmentList[0];
+      console.log(context);
       res.render('assignment', context);
     },
     function(error) {
@@ -431,7 +452,7 @@ app.get('/getAssignments', function(req, res, next){
   //debug 
   // req.session.user_id = 1; 
 
-  getAllAssignmentsForCourse(req.query.course_id, req.session.user_id,  
+  getAssignmentFromCourse(req.query.course_id, req.session.user_id,  
   function(assignmentList) {
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(assignmentList));
@@ -443,27 +464,42 @@ app.get('/getAssignments', function(req, res, next){
 });
 
 
-var getAllAssignmentsForCourse = function(courseId, studentId, success, failure) {
-  if (!courseId || !studentId) {
-    var errorMessage = "courseId or studentId is invalid";
+var getAssignmentFromCourse = function(courseId, assignmentId, success, failure) {
+  if (!courseId || !assignmentId) {
+    var errorMessage = "courseId or assignment Id is invalid";
     console.log(errorMessage);
     failure(errorMessage);
     return;
   }
 
   mysql.pool.query("SELECT assignment.title, assignment.questions FROM assignment " + 
-                  "INNER JOIN course ON assignment.course_id = course.course_id " + 
-                  "INNER JOIN student_course ON course.course_id = student_course.c_id " +
-                  "WHERE course.course_id = ? AND student_course.s_id = ?", [courseId, studentId], function (error, result) {
+                  "WHERE assignment.course_id = ? AND assignment.assignment_id = ?", [courseId, assignmentId], function (error, result) {
     if (error) {
-      console.log("Failed to get assignments of course " + courseId, "for student " + studentId);
+      console.log("Failed to get lecture of course " + courseId, "for assignment ID " + assignmentId);
       failure(error);
     } else {
-      console.log("Get assignment for user " + JSON.stringify(result));
-      success(result);
+      console.log("Get assignment for user : " + JSON.stringify(result));
+      success(JSON.parse(JSON.stringify(result)));
     }
   });
 };
+
+/*****************Assignment POST route *********************/
+//Users submit answer to database.
+app.post('/course/:c_id/assignment/:a_id', checkCourseAssignment, function(req, res, next) {
+  mysql.pool.query(
+    'INSERT INTO `student_assignment` (answers, assignment_id, student_id, course_id) VALUES (?, ?, ?, ?)',
+    [req.body.answers, req.params.a_id, req.session.user_id, req.params.c_id],
+    function (err, results, fields) {
+    if(err) {
+      next(err);
+      return;
+    } else {
+      res.sendStatus(200);
+    }
+  });
+})
+
 
 
 // Route to Education Plans. Not implemented
@@ -471,6 +507,7 @@ app.get('/educationplan', function (req, res) {
   var context = {};
   res.send("Page under construction.")
 });
+
 
 
 // Route to Education Progress. Not implemented
