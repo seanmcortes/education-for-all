@@ -216,7 +216,7 @@ app.get('/profile', checkAuth, function(req, res, next) {
         context.last_name = results[0].last_name;
         context.first_name = results[0].first_name;
         context.DOB = results[0].DOB;
-        context.identifiction = results[0].identification;
+        context.identification = results[0].identification;
         context.user_type = req.session.user_type;
         console.log(context);
         res.render('profile', context);
