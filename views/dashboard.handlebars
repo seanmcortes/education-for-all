@@ -3,12 +3,42 @@ Program: Education For All
 Authors: Jason Anderson, Sean Cortes, Joel Huffman, Tingting Lin, Ting Ju Sheppy
 Concept: Jacob Carter
 -->
-<div>
-    {{#each courseLink}}
-        <ul>
-        	<li>{{this.name}}</li>
-            <li>{{this.course_id}}</li>
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="styles.css" rel="stylesheet" type="text/css">
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <h2>Dashboard</h2>
+      <div>
+        <center>
+          <nav>
+            <ul> 
+              <li><b><a href="/profile">Profile</a></b></li>
+              <li><b><a href="/educationplan">Education Planner</a></b></li>
+              <li><b><a href="/educationprogress">Education Progress</a></b></li>
+              <li><b><a href="/logout">Logout</a></b></li>
+            </ul>
+          </nav>
+        </center>
+      </div>
 
-        </ul>
-    {{/each}}
-</div>
+      <div>
+        <table id="classes">
+          {{#if courseLink}}
+            {{#each courseLink}}
+              <tr>
+                <td>
+                  <a href="/course/{{this.course_id}}" id={{this.id}}>
+                    {{this.name}}
+                  </a>
+                </td>
+              </tr>
+            {{/each}}
+          {{/if}}    
+        </table>  
+      </div>
+    <script type="text/javascript" src="/client.js"></script>
+  </body>
+</html>

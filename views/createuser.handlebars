@@ -11,5 +11,27 @@ Concept: Jacob Carter
   </head>
   <body>
     <h2>Create User</h2>
-    <p1>{{ tests }}</p1>
+    <fieldset>
+    	<legend>Create User</legend>
+        <form action="/admin/createuser" method="post">
+        <input type="radio" name="user_type" value="student"> Student
+        <input type="radio" name="user_type" value="instructor"> Instructor<br>
+    	<label for="username">Username</label>
+    	<input type="text" name="username" placeholder="Username" id="username">
+    	<label for="password">Password</label>
+    	<input type="text" name="password" placeholder="Password" id="password">
+    	<br>
+    	<label for="first_name">First Name</label>
+    	<input type="text" name="first_name" placeholder="First Name" id="first_name">
+    	<label for="last_name">Last Name</label>
+    	<input type="text" name="last_name" placeholder="Last Name" id="last_name">
+    	<br>
+    	<label for="DOB">Date of Birth</label>
+    	<input type="text" name="DOB" placeholder="Date of Birth" id="DOB">
+    	<label for="identification">Identification</label>
+    	<input type="text" name="identification" placeholder="Identification" id="identification">
+    	<br>
+    	<input type="submit" id="Create User">
+        </form>
+    </fieldset>
   </body>

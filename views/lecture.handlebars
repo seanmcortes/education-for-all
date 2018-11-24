@@ -4,11 +4,13 @@ Authors: Jason Anderson, Sean Cortes, Joel Huffman, Tingting Lin, Ting Ju Sheppy
 Concept: Jacob Carter
 -->
 
-<h2>Lecture Page</h2>
-  {{#each lectureList}}
-      <ul>
-        <li>{{this.title}}</li>
-          <li>{{this.body}}</li>
-
-      </ul>
-  {{/each}}
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="/client.js"></script>
+  </head>
+  <body>
+    <h2>Lecture</h2>
+      <h3>{{title}}</h3>
+        <p>{{body}}</p>
+  </body>
