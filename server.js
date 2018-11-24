@@ -236,7 +236,7 @@ app.get('/', function (req, res) {
 //return html page for dashboard
 
 //example : enter http://localhost:3000/dashboard to get the course overview for student id 1.
-app.get('/dashboard', function (req, res) {
+app.get('/dashboard', checkAuth, function (req, res) {
 
   //debug, the function works.
   // req.session.user_id = 1; 
