@@ -14,22 +14,22 @@ Concept: Jacob Carter
     <fieldset>
     	<legend>Create User</legend>
         <form action="/admin/createuser" method="post">
-        <input type="radio" name="user_type" value="student"> Student
+        <input type="radio" name="user_type" value="student" required> Student
         <input type="radio" name="user_type" value="instructor"> Instructor<br>
     	<label for="username">Username</label>
-    	<input type="text" name="username" placeholder="Username" id="username">
+    	<input type="text" name="username" placeholder="Username" id="username" required>
     	<label for="password">Password</label>
-    	<input type="text" name="password" placeholder="Password" id="password">
+    	<input type="text" name="password" placeholder="Password" id="password" required>
     	<br>
     	<label for="first_name">First Name</label>
-    	<input type="text" name="first_name" placeholder="First Name" id="first_name">
+    	<input type="text" name="first_name" placeholder="First Name" id="first_name" required>
     	<label for="last_name">Last Name</label>
-    	<input type="text" name="last_name" placeholder="Last Name" id="last_name">
+    	<input type="text" name="last_name" placeholder="Last Name" id="last_name" required>
     	<br>
     	<label for="DOB">Date of Birth</label>
-    	<input type="text" name="DOB" placeholder="Date of Birth" id="DOB">
+    	<input type="date" name="DOB" id="DOB" required>
     	<label for="identification">Identification</label>
-    	<input type="text" name="identification" placeholder="Identification" id="identification">
+    	<input type="text" name="identification" placeholder="Identification" id="identification" required>
     	<br>
     	<input type="submit" id="Create User">
         </form>
