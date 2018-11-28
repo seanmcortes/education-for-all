@@ -423,7 +423,7 @@ var getLectureFromCourse = function(courseId, lectureId, success, failure) {
 
 
 
-/***********s assignments page to display all assignments for selected course that user take **********/
+/***********s assignments page to display assignments for selected course that user take **********/
 
 //return html page of assignments for selected course
 //example : enter http://localhost:3000/course/1/assignments/1 to get the assignment id 1 for course id 1.
@@ -478,7 +478,12 @@ var getAssignmentFromCourse = function(courseId, assignmentId, success, failure)
       console.log("Failed to get lecture of course " + courseId, "for assignment ID " + assignmentId);
       failure(error);
     } else {
-      console.log("Get assignment for user : " + JSON.stringify(result));
+      console.log("Before split, get assignment for user : " + JSON.stringify(result));
+      
+     var splitQuestionArray = result[0].questions.split("\n");
+     result[0].questions = splitQuestionArray;
+     console.log("After split, get question array for user : " + JSON.stringify(splitQuestionArray));
+
       success(JSON.parse(JSON.stringify(result)));
     }
   });
@@ -486,7 +491,17 @@ var getAssignmentFromCourse = function(courseId, assignmentId, success, failure)
 
 /*****************Assignment POST route *********************/
 //Users submit answer to database.
+//Answers is a list of O or 1, [1,0,1,0,1,1]
+
 app.post('/course/:c_id/assignment/:a_id', checkCourseAssignment, function(req, res, next) {
+  req.body.answers = [1,0,1]; //debug 
+
+  console.log("Before join the answer, get user's answers for assignment : " + JSON.stringify(req.body.answers));
+
+  var joinAnswers = req.body.answers.join('\n');
+  req.body.answers = joinAnswers;
+  console.log("After join the answer list, now the answer string is : " + JSON.stringify(req.body.answers));
+
   mysql.pool.query(
     'INSERT INTO `student_assignment` (answers, assignment_id, student_id, course_id) VALUES (?, ?, ?, ?)',
     [req.body.answers, req.params.a_id, req.session.user_id, req.params.c_id],
