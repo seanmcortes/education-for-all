@@ -494,7 +494,7 @@ var getAssignmentFromCourse = function(courseId, assignmentId, success, failure)
 //Answers is a list of O or 1, [1,0,1,0,1,1]
 
 app.post('/course/:c_id/assignment/:a_id', checkCourseAssignment, function(req, res, next) {
-  req.body.answers = [1,0,1]; //debug 
+  //req.body.answers = [1,0,1]; //debug 
 
   console.log("Before join the answer, get user's answers for assignment : " + JSON.stringify(req.body.answers));
 
