@@ -478,12 +478,11 @@ var getAssignmentFromCourse = function(courseId, assignmentId, success, failure)
       console.log("Failed to get lecture of course " + courseId, "for assignment ID " + assignmentId);
       failure(error);
     } else {
-      console.log("Before split, get assignment for user : " + JSON.stringify(result));
+      // console.log("Before split, get assignment for user : " + JSON.stringify(result));
       
-     var splitQuestionArray = result[0].questions.split("\n");
-     result[0].questions = splitQuestionArray;
-     console.log("After split, get question array for user : " + JSON.stringify(splitQuestionArray));
-
+      var splitQuestionArray = result[0].questions.split(/[\r\n]+/);
+      result[0].questions = splitQuestionArray;
+      // console.log("After split, get question array for user : " + JSON.stringify(splitQuestionArray));
       success(JSON.parse(JSON.stringify(result)));
     }
   });
