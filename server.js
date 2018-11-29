@@ -415,8 +415,9 @@ var getLectureFromCourse = function(courseId, lectureId, success, failure) {
       console.log("Failed to get lecture of course " + courseId, "for lecture ID " + lectureId);
       failure(error);
     } else {
-      console.log("Get lecture for user : " + JSON.stringify(result));
-      success(JSON.parse(JSON.stringify(result)));
+      var rawResults = JSON.stringify(result);
+      var stringToDisplay = rawResults.replace(/\\r\\n/g, "<br>");
+      success(JSON.parse(stringToDisplay));
     }
   });
 };
