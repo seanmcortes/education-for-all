@@ -415,9 +415,7 @@ var getLectureFromCourse = function(courseId, lectureId, success, failure) {
       console.log("Failed to get lecture of course " + courseId, "for lecture ID " + lectureId);
       failure(error);
     } else {
-      var rawResults = JSON.stringify(result);
-      var stringToDisplay = rawResults.replace(/\\r\\n/g, "<br>");
-      success(JSON.parse(stringToDisplay));
+      success(JSON.parse(JSON.stringify(result)));
     }
   });
 };
@@ -496,19 +494,12 @@ var getAssignmentFromCourse = function(courseId, assignmentId, success, failure)
 //Answers is a list of O or 1, [1,0,1,0,1,1]
 
 app.post('/course/:c_id/assignment/:a_id', checkCourseAssignment, function(req, res, next) {
-  //req.body.answers = [1,0,1]; //debug 
-
   var answers = [];
   Object.keys(req.body).forEach(function(key) {
     answers.push(req.body[key]);
   });
 
   req.body.answers = answers.join('\n');
-  // console.log("Before join the answer, get user's answers for assignment : " + JSON.stringify(req.body.answers));
-
-  // var joinAnswers = req.body.answers.join('\n');
-  // req.body.answers = joinAnswers;
-  // console.log("After join the answer list, now the answer string is : " + JSON.stringify(req.body.answers));
 
   mysql.pool.query(
     'INSERT INTO `student_assignment` (answers, assignment_id, student_id, course_id) VALUES (?, ?, ?, ?)',
