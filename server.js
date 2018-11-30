@@ -498,11 +498,17 @@ var getAssignmentFromCourse = function(courseId, assignmentId, success, failure)
 app.post('/course/:c_id/assignment/:a_id', checkCourseAssignment, function(req, res, next) {
   //req.body.answers = [1,0,1]; //debug 
 
-  console.log("Before join the answer, get user's answers for assignment : " + JSON.stringify(req.body.answers));
+  var answers = [];
+  Object.keys(req.body).forEach(function(key) {
+    answers.push(req.body[key]);
+  });
 
-  var joinAnswers = req.body.answers.join('\n');
-  req.body.answers = joinAnswers;
-  console.log("After join the answer list, now the answer string is : " + JSON.stringify(req.body.answers));
+  req.body.answers = answers.join('\n');
+  // console.log("Before join the answer, get user's answers for assignment : " + JSON.stringify(req.body.answers));
+
+  // var joinAnswers = req.body.answers.join('\n');
+  // req.body.answers = joinAnswers;
+  // console.log("After join the answer list, now the answer string is : " + JSON.stringify(req.body.answers));
 
   mysql.pool.query(
     'INSERT INTO `student_assignment` (answers, assignment_id, student_id, course_id) VALUES (?, ?, ?, ?)',
