@@ -230,9 +230,10 @@ app.get('/profile', checkAuth, function(req, res, next) {
         res.write(JSON.stringify(error));
         res.end();
       } else {
+        var date = new Date(results[0].DOB);
         context.last_name = results[0].last_name;
         context.first_name = results[0].first_name;
-        context.DOB = results[0].DOB;
+        context.DOB = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
         context.identification = results[0].identification;
         context.user_type = req.session.user_type;
         console.log(context);
