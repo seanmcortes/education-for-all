@@ -437,6 +437,8 @@ app.get('/course/:c_id/assignment/:a_id', checkCourseAuth, checkCourseAssignment
   getAssignmentFromCourse(req.params.c_id, req.params.a_id,  
     function(assignmentList) {
       context = assignmentList[0];
+      context.course_id = req.params.c_id;
+      context.assignment_id = req.params.a_id;
       console.log(context);
       res.render('assignment', context);
     },
@@ -514,8 +516,6 @@ app.post('/course/:c_id/assignment/:a_id', checkCourseAssignment, function(req, 
     }
   });
 })
-
-
 
 // Route to Education Plans. Not implemented
 app.get('/educationplan', function (req, res) {
