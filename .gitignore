@@ -1,4 +1,5 @@
 node_modules/
+dbcon.js
 .vs/
 *.DS_Store
 
