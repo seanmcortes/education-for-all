@@ -12,10 +12,9 @@ html,body {
 }
 
 #login-form {
-  margin-top: 2.5%;
+  margin-top: 2rem;
   text-align: center;
   vertical-align: center;
-/*  background-image: url("login.jpg");*/
 }
 
 #login-container {

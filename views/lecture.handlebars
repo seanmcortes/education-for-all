@@ -10,7 +10,19 @@ Concept: Jacob Carter
     <script type="text/javascript" src="/client.js"></script>
   </head>
   <body>
-    <h2>Lecture</h2>
-      <h3>{{title}}</h3>
-      	<p style="white-space: pre-wrap;">{{body}}</p>
+    {{>navbar}}
+
+    <div class="container" style="margin-top: 2rem;">
+      <div class="row">
+        <div class="col-sm-8 offset-sm-2 text-center" style="background-color: #383633;">
+          <h3 style="color: white;">{{title}}</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-8 offset-sm-2">
+          <p style="white-space: pre-wrap;">{{body}}</p>
+        </div>
+      </div>
+    </div>
+    
   </body>
