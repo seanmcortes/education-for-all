@@ -12,9 +12,10 @@ html,body {
 }
 
 #login-form {
-  margin-top: 2rem;
+  margin-top: 2.5%;
   text-align: center;
   vertical-align: center;
+/*  background-image: url("login.jpg");*/
 }
 
 #login-container {
@@ -24,9 +25,8 @@ html,body {
   height: 100%;
 }
 
-label {
+#login-text {
   font-size: 20px;
   font-weight: bold;
   font-family: 'Slabo 27px', serif;
 }
-

@@ -8,15 +8,26 @@ Concept: Jacob Carter
 <html>
   <head>
     <script type="text/javascript" src="/client.js"></script>
+    <link href="profile.css" rel="stylesheet" type="text/css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
   </head>
   <body>
-    <h2>Profile</h2>
-    <fieldset>
-    	<legend>Profile</legend>
-    		<span><b>First name:</b>{{this.first_name}} </span> <br>
-    		<span><b>Last name: </b>{{this.last_name}} </span> <br>
-    		<span><b>Date of birth: </b>{{this.DOB}} </span> <br>
-      	<span><b>Identification: </b>{{this.identification}} </span> <br>
-      	<span><b>Account type: </b>{{this.user_type}} </span>
-    </fieldset>
+    <div class="container-fluid" id="login-container">
+      <div class="row">
+        <div class="col-sm" id="login-title">Education for All</div> 
+      </div>
+      <div class="row">
+        <div class="col-md col-md-offset-4">
+          <fieldset class="login-form">
+          	<legend id="login-text">Profile</legend>
+          		<span id="login-text">First name: {{this.first_name}} </span> <br>
+          		<span id="login-text">Last name: {{this.last_name}} </span> <br>
+          		<span id="login-text">Date of birth: {{this.DOB}} </span> <br>
+            	<span id="login-text">Identification: {{this.identification}} </span> <br>
+            	<span id="login-text">Account type: {{this.user_type}} </span>
+          </fieldset>
+        </div>
+      </div>
+    </div>
   </body>
