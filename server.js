@@ -2,7 +2,11 @@ var express = require('express');
 var session = require('express-session');
 var app = express();
 var mysql = require('./dbcon.js');
-var handlebars = require('express-handlebars').create({defaultLayout:'main'});
+var handlebars = require('express-handlebars').create({
+  defaultLayout: 'main',
+  partialsDir: __dirname + '/views/partials/'
+});
+
 var bodyParser = require('body-parser');
 
 const path = require('path');

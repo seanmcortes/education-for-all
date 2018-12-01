@@ -1,0 +1,29 @@
+html,body {
+  height: 100%;
+}
+
+#login-title {
+  background-color: #8ae65c;
+  text-align: center;
+  font-family: 'Slabo 27px', serif;
+  font-size: 50px;
+  font-weight: bold;
+  color: white;
+}
+
+#login-form {
+  margin-top: 2.5%;
+  text-align: center;
+  vertical-align: center;
+/*  background-image: url("login.jpg");*/
+}
+
+.flex-fill {
+
+}
+#login-container {
+  background: url(/images/login.jpeg);
+  background-repeat: no-repeat;
+  background-position: right;
+  height: 100%;
+}

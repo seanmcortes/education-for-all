@@ -8,19 +8,29 @@ Concept: Jacob Carter
 <html>
   <head>
     <script type="text/javascript" src="/client.js"></script>
+    <link href="login.css" rel="stylesheet" type="text/css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
   </head>
   <body>
-    <h2>Login</h2>
-    <form action="/login" method="post">
-      <fieldset>
-      	<legend>Login</legend>
-        	<label for="username">Username</label>
-        	<input type="text" name="username" placeholder="username" id="username" required>
-        	<br>
-        	<label for="password">Password</label>
-        	<input type ="password" name="password" placeholder="password" id="password" required>
-          <br>
-        	<input type="submit" value="submit" id="login">
-      </fieldset>
-    </form>
+    <div class="container-fluid" id="login-container">
+      <div class="row">
+        <div class="col-sm" id="login-title">Education for All</div>
+      </div>
+      <div class="row">
+        <div class="col-md col-md-offset-4">
+          <form action="/login" id="login-form" method="post">
+              <div class="form-group">
+                <label for="username">Username</label><br>
+                <input type="text" name="username" id="username" required>
+              </div>
+              <div class="form-group">
+                <label for="password">Password</label><br>
+                <input type ="password" name="password" id="password" required>
+              </div>
+              <input type="submit" value="LOGIN" id="login"></input>
+          </form>
+        </div>
+      </div>
+    </div>
   </body>
