@@ -25,9 +25,8 @@ html,body {
   height: 100%;
 }
 
-label {
+#login-text {
   font-size: 20px;
   font-weight: bold;
   font-family: 'Slabo 27px', serif;
 }
-
