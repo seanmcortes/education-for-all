@@ -18,12 +18,15 @@ html,body {
 /*  background-image: url("login.jpg");*/
 }
 
-.flex-fill {
-
-}
 #login-container {
   background: url(/images/login.jpeg);
   background-repeat: no-repeat;
   background-position: right;
   height: 100%;
+}
+
+label {
+  font-size: 20px;
+  font-weight: bold;
+  font-family: 'Slabo 27px', serif;
 }
