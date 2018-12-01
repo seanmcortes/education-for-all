@@ -1,0 +1,14 @@
+nav {
+  background-color: #8ae65c;
+}
+
+caption {
+  display: table-caption;
+}
+#course-table {
+  margin-top: 5%;
+}
+
+#course-table td {
+  padding: 0 15px 0 15px;
+}

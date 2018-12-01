@@ -2,7 +2,11 @@ var express = require('express');
 var session = require('express-session');
 var app = express();
 var mysql = require('./dbcon.js');
-var handlebars = require('express-handlebars').create({defaultLayout:'main'});
+var handlebars = require('express-handlebars').create({
+  defaultLayout: 'main',
+  partialsDir: __dirname + '/views/partials/'
+});
+
 var bodyParser = require('body-parser');
 
 const path = require('path');
@@ -15,15 +19,6 @@ app.set('port', 3000);
 
 app.use(express.static('public'));
 
-
-// test connection, run 'node ./server.js'
-// mysql.pool.query('SELECT * FROM `user`', function(err, results, fields){
-//       if(err){
-//         console.log("Unable to connect to user table/database!");
-//         return;
-//       }
-//       console.log(results);
-//     })
 
 app.use(session({
   secret: 'group18',
@@ -157,11 +152,13 @@ function checkCourseAssignment(req, res, next) {
     });
 }
 
+
 /*********** login GET route **********/
 app.get('/login', function(req, res, next) {
   var context = {};
   res.render('login', context);
 });
+
 
 /*********** login POST route **********/
 // Query database for matching username/password pairiing. Error if no matching pair is found.
@@ -225,6 +222,7 @@ app.post('/admin/createuser', checkAdmin, function(req, res, next) {
   });
 })
 
+
 /*********** profile page **********/
 // Displays last name, first  name, DOB, identification, and user type of currently logged in user.
 app.get('/profile', checkAuth, function(req, res, next) {
@@ -236,9 +234,10 @@ app.get('/profile', checkAuth, function(req, res, next) {
         res.write(JSON.stringify(error));
         res.end();
       } else {
+        var date = new Date(results[0].DOB);
         context.last_name = results[0].last_name;
         context.first_name = results[0].first_name;
-        context.DOB = results[0].DOB;
+        context.DOB = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
         context.identification = results[0].identification;
         context.user_type = req.session.user_type;
         console.log(context);
@@ -247,6 +246,7 @@ app.get('/profile', checkAuth, function(req, res, next) {
   });
 });
 
+
 /*********** home page **********/
 app.get('/', function (req, res) {
     var context = {};
@@ -254,16 +254,13 @@ app.get('/', function (req, res) {
     res.render('home', context);
 });
 
+
 /*********** dashboard page including the link of selected courses **********/
 
 //return html page for dashboard
 
 //example : enter http://localhost:3000/dashboard to get the course overview for student id 1.
 app.get('/dashboard', checkAuth, function (req, res) {
-
-  //debug, the function works.
-  // req.session.user_id = 1; 
-
   var context = {};
   getDashboardByStudentId(req.session.user_id, 
     function(courseLink) {
@@ -277,13 +274,9 @@ app.get('/dashboard', checkAuth, function (req, res) {
   );
 });
 
+
 //get dashboard API
 app.get('/getDashboard', function(req, res, next){
-
-  //debug 
-  // req.session.user_id = 1; 
-
-
   getDashboardByStudentId(req.session.user_id,
   function(courseLink) {
     res.setHeader('Content-Type', 'application/json');
@@ -317,10 +310,10 @@ var getDashboardByStudentId = function(studentId, success, failure) {
   });
 };
 
+
 /*********** coursesOverview page to display Course overview that user takes**********/
 
 //return html page for course overview
-
 
 app.get('/course/:c_id', checkCourseAuth, function (req, res) {
   var context = {
@@ -356,12 +349,12 @@ app.get('/course/:c_id', checkCourseAuth, function (req, res) {
   });
 });
 
+
 /*********** lecture page to display all lectures for selected course that user takes**********/
 
 //return html page of lecture for selected course
 
 //example : enter http://localhost:3000/lectures?course_id=1 to get the lecture overview for student id 1.
-
 
 // app.get('/lectures', function (req, res) {
 app.get('/course/:c_id/lecture/:l_id', checkCourseAuth, checkCourseLecture, function (req, res) {
@@ -382,6 +375,7 @@ app.get('/course/:c_id/lecture/:l_id', checkCourseAuth, checkCourseLecture, func
     }
   );
 });
+
 
 //get Lectures API
 app.get('/getLectures', function(req, res, next){
@@ -415,27 +409,24 @@ var getLectureFromCourse = function(courseId, lectureId, success, failure) {
       console.log("Failed to get lecture of course " + courseId, "for lecture ID " + lectureId);
       failure(error);
     } else {
-      console.log("Get lecture for user : " + JSON.stringify(result));
       success(JSON.parse(JSON.stringify(result)));
     }
   });
 };
 
 
-
-/***********s assignments page to display all assignments for selected course that user take **********/
+/*********** assignments page to display assignments for selected course that user take **********/
 
 //return html page of assignments for selected course
 //example : enter http://localhost:3000/course/1/assignments/1 to get the assignment id 1 for course id 1.
 
 app.get('/course/:c_id/assignment/:a_id', checkCourseAuth, checkCourseAssignment, function (req, res) {
-  //debug 
-  // req.session.user_id = 1; 
-
   var context = {};
   getAssignmentFromCourse(req.params.c_id, req.params.a_id,  
     function(assignmentList) {
       context = assignmentList[0];
+      context.course_id = req.params.c_id;
+      context.assignment_id = req.params.a_id;
       console.log(context);
       res.render('assignment', context);
     },
@@ -446,12 +437,9 @@ app.get('/course/:c_id/assignment/:a_id', checkCourseAuth, checkCourseAssignment
   );
 });
 
+
 //get assignment API
 app.get('/getAssignments', function(req, res, next){
-
-  //debug 
-  // req.session.user_id = 1; 
-
   getAssignmentFromCourse(req.query.course_id, req.session.user_id,  
   function(assignmentList) {
     res.setHeader('Content-Type', 'application/json');
@@ -459,8 +447,7 @@ app.get('/getAssignments', function(req, res, next){
   },
   function(error) {
     res.send(JSON.stringify(error));
-  }
-);
+  });
 });
 
 
@@ -478,15 +465,25 @@ var getAssignmentFromCourse = function(courseId, assignmentId, success, failure)
       console.log("Failed to get lecture of course " + courseId, "for assignment ID " + assignmentId);
       failure(error);
     } else {
-      console.log("Get assignment for user : " + JSON.stringify(result));
+      var splitQuestionArray = result[0].questions.split(/[\r\n]+/);
+      result[0].questions = splitQuestionArray;
       success(JSON.parse(JSON.stringify(result)));
     }
   });
 };
 
+
 /*****************Assignment POST route *********************/
 //Users submit answer to database.
+//Answers is a list of O or 1, [1,0,1,0,1,1]
 app.post('/course/:c_id/assignment/:a_id', checkCourseAssignment, function(req, res, next) {
+  var answers = [];
+  Object.keys(req.body).forEach(function(key) {
+    answers.push(req.body[key]);
+  });
+
+  req.body.answers = answers.join('\n');
+
   mysql.pool.query(
     'INSERT INTO `student_assignment` (answers, assignment_id, student_id, course_id) VALUES (?, ?, ?, ?)',
     [req.body.answers, req.params.a_id, req.session.user_id, req.params.c_id],
@@ -495,13 +492,12 @@ app.post('/course/:c_id/assignment/:a_id', checkCourseAssignment, function(req, 
       next(err);
       return;
     } else {
-      res.sendStatus(200);
+      res.send("Submission successful!");
     }
   });
 })
 
-
-
+/*****************Assignment POST route *********************/
 // Route to Education Plans. Not implemented
 app.get('/educationplan', function (req, res) {
   var context = {};
@@ -509,12 +505,12 @@ app.get('/educationplan', function (req, res) {
 });
 
 
-
 // Route to Education Progress. Not implemented
 app.get('/educationprogress', function (req, res) {
   var context = {};
   res.send("Page under construction.")
 });
+
 
 /*********** logout **********/
 app.get('/logout', function (req, res) {
