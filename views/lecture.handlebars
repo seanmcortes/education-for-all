@@ -7,22 +7,24 @@ Concept: Jacob Carter
 <!DOCTYPE html>
 <html>
   <head>
-    <script type="text/javascript" src="/client.js"></script>
+    <link href="/lecture.css" rel="stylesheet" type="text/css">
   </head>
   <body>
-    {{>navbar}}
-
-    <div class="container" style="margin-top: 2rem;">
+    <div class="container custom-container">
       <div class="row">
-        <div class="col-sm-8 offset-sm-2 text-center" style="background-color: #383633;">
-          <h3 style="color: white;">{{title}}</h3>
+        {{>navbar}}
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="col-md-8 offset-md-2 title-container">
+            <h3>{{title}}</h3>
+          </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-8 offset-sm-2">
-          <p style="white-space: pre-wrap;">{{body}}</p>
+        <div class="col-md-8 offset-md-2 body-container">
+          <p>{{body}}</p>
         </div>
       </div>
     </div>
-    
   </body>
