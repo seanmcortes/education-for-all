@@ -1,0 +1,32 @@
+html, body {
+  background-color: #383633;
+  overflow: auto;
+  height: 100%;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.custom-container {
+  background-color: white;
+  height: 100%;
+  overflow: auto;
+}
+
+.title-container {
+  background-color: #383633;
+  margin-top: 30px;
+}
+
+.title-container h3 {
+  color: white;
+  font-size: 40px;
+}
+
+.body-container p {
+  padding-top: 40px;
+  font-size: 20px;
+}
+
+#submit {
+  margin-top: 40px;
+  text-align: center
+}
