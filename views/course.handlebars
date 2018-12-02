@@ -16,37 +16,48 @@ Concept: Jacob Carter
         {{>navbar}}
       </div>
       <div class="row">
-        <div class="col-md-12 course-overview-title">
-          <h2 class="text-center">Course Overview</h2>
+        <div class="col-md-12" id="course-banner">
+          <img src="/images/{{this.name}}.jpeg" id="course-image">
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6">
-          <h3>Lectures</h3>
-          <table id="lectures">
-            {{#if lecture}}
-              {{#each lecture}}
-                <tr>
-                  <td>
-                    <a href="/course/{{../course_id}}/lecture/{{this.lecture_id}}" id={{this.lecture_id}}>{{this.title}}</a>
-                  </td
-                </tr>
-              {{/each}}  
-            {{/if}}  
-          </table>
+        <div class="col-md-12" id="course-title">
+          {{this.name}}
         </div>
-        <div class="col-md-6">
-          <h3>Assignments</h3>
-          <table id="assignments">
-            {{#if assignment}}
-              {{#each assignment}}
-                <tr>
-                  <td>
-                    <a href="/course/{{../course_id}}/assignment/{{this.assignment_id}}" id={{this.assignment_id}}>{{this.title}}</a>
-                  </td>
-                </tr>
-              {{/each}}  
-            {{/if}}  
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table" id="course-table">
+            <tbody>
+              <tr>
+                <th>Lectures</th>
+                <th>Assignments</th>
+              </tr>
+              <tr>
+                <td>
+                  <ul id="lecture-list">
+                    {{#if lecture}}
+                      {{#each lecture}}
+                        <li>
+                          <a href="/course/{{../course_id}}/lecture/{{this.lecture_id}}" id={{this.lecture_id}}>{{this.title}}</a>
+                        </li>
+                      {{/each}}
+                    {{/if}}
+                  </ul>
+                </td>
+                <td>
+                  <ul id="assignment-list">
+                    {{#if assignment}}
+                      {{#each assignment}}
+                        <li>
+                          <a href="/course/{{../course_id}}/assignment/{{this.assignment_id}}" id={{this.assignment_id}}>{{this.title}}</a>
+                        </li>
+                      {{/each}}
+                    {{/if}}
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>

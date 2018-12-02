@@ -341,8 +341,19 @@ app.get('/course/:c_id', checkCourseAuth, function (req, res) {
                 res.end();
               } else {
                 context.assignment = results;
-                console.log(context);
-                res.render('course', context);
+
+                mysql.pool.query(
+                  "SELECT c.name FROM `course` c WHERE c.course_id = " + req.params.c_id,
+                    function(err, results, fields) {
+                      if(err) {
+                        res.write(JSON.stringify(err));
+                        res.end();
+                      } else {
+                        context.name = results[0].name;
+                        console.log(context);
+                        res.render('course', context);
+                      }
+                    });
               }
             });
       }
