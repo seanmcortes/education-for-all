@@ -1,14 +1,72 @@
-nav {
-  background-color: #8ae65c;
-}
-
 caption {
   display: table-caption;
 }
+
+html, body {
+  height: 100vh;
+}
+
+body {
+  background-color: #383633;
+}
+
+.custom-container {
+  min-height: 100vh;
+/*  height: 100%;*/
+}
+
+.custom-container {
+  max-width: 75%;
+  background-color: white;
+  max-height: 100%;
+}
+
 #course-table {
   margin-top: 5%;
 }
 
 #course-table td {
   padding: 0 15px 0 15px;
+}
+
+#banner-image {
+  max-width: 100%;
+  height: 500px;
+  background-image: url(images/banner.jpeg);
+  background-position: center;
+}
+
+#banner-course {
+  max-width: 100%;
+  background-color: #8ae65c;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  
+}
+
+.banner-course-container {
+  margin-left: 20%;
+}
+
+#banner-course h1 {
+  font-size: 40px;
+  text-align: left;
+  font-weight: bold;
+  font-family: 'Montserrat', sans-serif;
+}
+
+#banner-course p {
+  font-size: 20px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.card {
+  width: 30rem;
+  margin: 10px 10px 10px 10px;
+}
+
+.card-body h5 {
+  color: white !important;
+  font-size: 30px;
+  font-family: 'Montserrat', sans-serif;
 }
