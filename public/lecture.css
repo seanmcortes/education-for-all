@@ -1,13 +1,10 @@
 html, body {
-  background-color: #383633;
-  overflow: auto;
   height: 100%;
+  background-color: #383633;
   font-family: 'Montserrat', sans-serif;
 }
 
-.custom-container {
-  height: 100%;
-  overflow-y: scroll;
+#lecture-container {
   background-color: white;
 }
 
