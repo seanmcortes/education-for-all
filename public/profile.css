@@ -1,32 +1,22 @@
 html,body {
   height: 100%;
-}
-
-#login-title {
-  background-color: #8ae65c;
-  text-align: center;
-  font-family: 'Slabo 27px', serif;
-  font-size: 50px;
-  font-weight: bold;
-  color: white;
-}
-
-#login-form {
-  margin-top: 2.5%;
-  text-align: center;
-  vertical-align: center;
-/*  background-image: url("login.jpg");*/
+  background-color: #383633;
+  font-family: 'Montserrat', sans-serif;
 }
 
 #login-container {
-  background: url(/images/login.jpeg);
-  background-repeat: no-repeat;
-  background-position: right;
   height: 100%;
+  background-color: white;
 }
 
-#login-text {
-  font-size: 20px;
-  font-weight: bold;
-  font-family: 'Slabo 27px', serif;
+#title-col {
+  background-color: #383633;
+  text-align: center;
+  color: white;
+  margin-top: 30px;
+}
+
+#profile-table tr td {
+  border-left: 1px solid black;
+  border-right: 1px solid black;
 }

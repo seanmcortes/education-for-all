@@ -7,24 +7,50 @@ Concept: Jacob Carter
 <!DOCTYPE html>
 <html>
   <head>
-    <script type="text/javascript" src="/client.js"></script>
     <link href="profile.css" rel="stylesheet" type="text/css">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
   </head>
   <body>
-    <div class="container-fluid" id="login-container">
-      {{>navbar}}
+    <div class="container" id="login-container">
+      <div class="row">
+        {{>navbar}}
+      </div>
+      <div class="row">
+        <div class="col-md-8 offset-md-2" id="title-col">
+          <h3>Profile</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8 offset-md-2" id="body-col">
+          <table class="table" id="profile-table">
+            <tbody>
+              <tr>
+                <td>First Name</td>
+                <td>{{this.first_name}}</td>
+              </tr>
+              <tr>
+                <td>Last Name</td>
+                <td>{{this.last_name}}</td>
+              </tr>
+              <tr>
+                <td>Date of Birth</td>
+                <td>{{this.DOB}}</td>
+              </tr>
+              <tr>
+                <td>Identification</td>
+                <td>{{this.identification}}</td>
+              </tr>
+              <tr>
+                <td>Account Type</td>
+                <td>{{this.user_type}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
       <div class="row">
         <div class="col-md col-md-offset-4">
-          <fieldset class="login-form">
-          	<legend id="login-text">Profile</legend>
-          		<span id="login-text">First name: {{this.first_name}} </span> <br>
-          		<span id="login-text">Last name: {{this.last_name}} </span> <br>
-          		<span id="login-text">Date of birth: {{this.DOB}} </span> <br>
-            	<span id="login-text">Identification: {{this.identification}} </span> <br>
-            	<span id="login-text">Account type: {{this.user_type}} </span>
-          </fieldset>
+          
         </div>
       </div>
     </div>
